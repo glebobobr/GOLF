@@ -10,8 +10,8 @@ public class GolfBallController : MonoBehaviour
     public float jumpForce = 2f;
 
     [Header("Golf Settings")]
-    public float minVelocity = 0.1f; // Минимальная скорость для определения движения
-    public bool useGolfControls = false; // Переключение между режимами управления
+    public float minVelocity = 0.1f;
+    public bool useGolfControls = false;
 
     [Header("Settings")]
     public float groundCheckRadius = 0.2f;
@@ -24,8 +24,7 @@ public class GolfBallController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-
-        // Если точка проверки земли не назначена, создаем ее
+        
         if (groundCheck == null)
         {
             GameObject check = new GameObject("GroundCheck");
@@ -37,17 +36,14 @@ public class GolfBallController : MonoBehaviour
 
     void Update()
     {
-        // Проверка соприкосновения с землей
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
-
-        // Используем стандартное управление только если не в режиме гольфа
         if (!useGolfControls)
         {
-            // Получаем ввод от пользователя
+            //получаем ввод от пользователя
             float horizontalInput = Input.GetAxisRaw("Horizontal");
             float verticalInput = Input.GetAxisRaw("Vertical");
 
-            // Определяем направление движения относительно камеры
+            //определяем направление движения относительно камеры
             Vector3 forward = Camera.main.transform.forward;
             Vector3 right = Camera.main.transform.right;
 
@@ -58,7 +54,7 @@ public class GolfBallController : MonoBehaviour
 
             moveDirection = (forward * verticalInput + right * horizontalInput).normalized;
 
-            // Прыжок
+            //прыжок
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 Jump();
@@ -83,43 +79,26 @@ public class GolfBallController : MonoBehaviour
 
     void Jump()
     {
-        // Применяем меньшую силу прыжка
+        //применяем меньшую силу прыжка
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     }
 
-    // Методы из GolfBall
-
-    /// <summary>
-    /// Проверяет, движется ли мяч
-    /// </summary>
-    /// <returns>True, если мяч движется; иначе false</returns>
     public bool IsMoving()
     {
         return rb != null && rb.linearVelocity.magnitude > minVelocity;
     }
 
-    /// <summary>
-    /// Применяет силу к мячу для удара
-    /// </summary>
-    /// <param name="force">Вектор силы для удара</param>
     public void Hit(Vector3 force)
     {
         if (rb != null)
         {
-            // Переключаемся в режим гольфа при ударе
+            //переключаемся в режим гольфа при ударе
             useGolfControls = true;
-
-            // Сбрасываем текущую скорость перед ударом (опционально)
-            // rb.velocity = Vector3.zero;
-
-            // Применяем силу удара
+            //применяем силу удара
             rb.AddForce(force, ForceMode.Impulse);
         }
     }
-
-    /// <summary>
-    /// Останавливает мяч полностью
-    /// </summary>
+    
     public void Stop()
     {
         if (rb != null)
@@ -129,10 +108,6 @@ public class GolfBallController : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Переключает режим управления мячом
-    /// </summary>
-    /// <param name="useGolf">True для режима гольфа, false для стандартного управления</param>
     public void SetGolfMode(bool useGolf)
     {
         useGolfControls = useGolf;
