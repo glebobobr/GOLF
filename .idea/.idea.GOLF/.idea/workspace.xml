@@ -5,13 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c870ef18-03f5-4599-920b-3b8c0dce9b31" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.plastic/plastic.changes" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.changes" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.plastic/plastic.wktree" beforeDir="false" afterPath="$PROJECT_DIR$/.plastic/plastic.wktree" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GOLF/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GOLF/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/GolfAim.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/GolfAim.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/GolfBallController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/GolfBallController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ThirdPersonCamera.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ThirdPersonCamera.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/chevron-arrows.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/chevron-arrows.png.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/scene.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +29,7 @@
     &quot;accountId&quot;: &quot;870b8056-654f-4c66-80b5-be83f0fc8c0b&quot;
   }
 }</component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
 }</component>
@@ -108,13 +105,15 @@
       <option name="presentableId" value="Default" />
       <updated>1745438882027</updated>
       <workItem from="1745438884352" duration="5945000" />
-      <workItem from="1745514504820" duration="4234000" />
+      <workItem from="1745514504820" duration="5853000" />
+      <workItem from="1745522758554" duration="1178000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
     <option name="hasUnityReference" value="true" />
