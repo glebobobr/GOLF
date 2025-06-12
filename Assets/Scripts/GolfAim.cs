@@ -12,6 +12,9 @@ public class GolfAim : MonoBehaviour
     public float powerMultiplier = 0.2f;
     public float forceMultiplier = 100f;
 
+    [Header("Минимальная сила удара")]
+    public float minPowerThreshold = 0.05f;
+
     [Header("Градиент цвета стрелки")]
     public Gradient powerGradient;
     
@@ -40,15 +43,15 @@ public class GolfAim : MonoBehaviour
             {
                 aimCircle.SetActive(true);
             }
-            
+
             if (aimCircle.activeSelf)
             {
                 aimCircle.transform.position = transform.position;
                 circleRotation += rotationSpeed * Time.deltaTime;
                 aimCircle.transform.rotation = Quaternion.LookRotation(
-                    Camera.main.transform.forward, 
+                    Camera.main.transform.forward,
                     Camera.main.transform.up);
-                
+
                 aimCircle.transform.Rotate(Vector3.forward, circleRotation, Space.Self);
             }
 
@@ -70,17 +73,17 @@ public class GolfAim : MonoBehaviour
         {
             Vector3 currentPoint = Input.mousePosition;
             Vector3 dir = (startPoint - currentPoint);
-            
+
             float power = Mathf.Clamp(dir.magnitude * powerMultiplier / 100f, 0, maxPower);
-            
+
             Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(currentPoint.x, currentPoint.y, Camera.main.transform.position.y - transform.position.y));
             Vector3 aimDir = (transform.position - worldPoint).normalized;
-            
+
             aimArrow.transform.position = transform.position;
             float angle = Mathf.Atan2(aimDir.z, aimDir.x) * Mathf.Rad2Deg - 90f;
-            
+
             aimArrow.transform.rotation = Quaternion.Euler(90, 0, angle);
-            
+
             float normalizedPower = power / maxPower;
             arrowRenderer.color = powerGradient.Evaluate(normalizedPower);
             aimArrow.transform.localScale = new Vector3(1, 1 + normalizedPower * 2f, 1);
@@ -88,9 +91,18 @@ public class GolfAim : MonoBehaviour
             //отпускаем мышь — удар
             if (Input.GetMouseButtonUp(0))
             {
-                rb.AddForce(aimDir * power * forceMultiplier, ForceMode.Impulse);
-                isAiming = false;
-                aimArrow.SetActive(false);
+                //мроверка на минимум силы
+                if (power < minPowerThreshold)
+                {
+                    isAiming = false;
+                    aimArrow.SetActive(false);
+                }
+                else
+                {
+                    rb.AddForce(aimDir * power * forceMultiplier, ForceMode.Impulse);
+                    isAiming = false;
+                    aimArrow.SetActive(false);
+                }
             }
         }
     }
