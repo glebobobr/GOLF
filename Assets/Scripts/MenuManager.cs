@@ -5,6 +5,10 @@ using TMPro;
 
 public class GameMenuManager : MonoBehaviour
 {
+    [Header("Canvases")]
+    public GameObject mainCanvas;
+    public GameObject levelsCanvas;
+
     [Header("UI Elements")]
     public Button resolutionButton;
     public Button displayModeButton;
@@ -12,6 +16,9 @@ public class GameMenuManager : MonoBehaviour
     public Button exitButton;
     public TMP_Text resolutionText;
     public TMP_Text displayModeText;
+
+    [Header("Level Buttons (1-10)")]
+    public Button[] levelButtons;
 
     [Header("Resolution Settings")]
     public ResolutionOption[] resolutionOptions = new ResolutionOption[]
@@ -25,20 +32,39 @@ public class GameMenuManager : MonoBehaviour
         new ResolutionOption(new Vector2Int(1920, 1080), "Full HD (1920x1080)"),
         new ResolutionOption(new Vector2Int(2560, 1440), "2K (2560x1440)")
     };
-
     private int currentResolutionIndex = 0;
     private bool isFullScreen = true;
 
     void Start()
     {
-        //инициализация кнопок
         resolutionButton.onClick.AddListener(CycleResolution);
         displayModeButton.onClick.AddListener(ToggleDisplayMode);
-        playButton.onClick.AddListener(LoadTestScene);
         exitButton.onClick.AddListener(ExitGame);
+        playButton.onClick.RemoveAllListeners();
+        playButton.onClick.AddListener(ShowLevelsMenu);
+        mainCanvas.SetActive(true);
+        levelsCanvas.SetActive(false);
+
+        for (int i = 0; i < levelButtons.Length; i++)
+        {
+            int levelIndex = i + 1;
+            levelButtons[i].onClick.RemoveAllListeners();
+            levelButtons[i].onClick.AddListener(() => LoadLevel(levelIndex));
+        }
 
         LoadSettings();
         UpdateUI();
+    }
+
+    void ShowLevelsMenu()
+    {
+        mainCanvas.SetActive(false);
+        levelsCanvas.SetActive(true);
+    }
+
+    void LoadLevel(int levelIndex)
+    {
+        SceneManager.LoadScene("level" + levelIndex);
     }
 
     void ExitGame()
@@ -68,21 +94,14 @@ public class GameMenuManager : MonoBehaviour
 
     void ApplyResolution()
     {
-        Vector2Int resolution = resolutionOptions[currentResolutionIndex].resolution;
-        Screen.SetResolution(resolution.x, resolution.y, isFullScreen);
+        Vector2Int res = resolutionOptions[currentResolutionIndex].resolution;
+        Screen.SetResolution(res.x, res.y, isFullScreen);
     }
 
     void UpdateUI()
     {
-        if (resolutionText != null)
-        {
-            resolutionText.text = resolutionOptions[currentResolutionIndex].displayName;
-        }
-
-        if (displayModeText != null)
-        {
-            displayModeText.text = isFullScreen ? "Fullscreen" : "Windowed";
-        }
+        if (resolutionText) resolutionText.text = resolutionOptions[currentResolutionIndex].displayName;
+        if (displayModeText) displayModeText.text = isFullScreen ? "Fullscreen" : "Windowed";
     }
 
     void SaveSettings()
@@ -99,18 +118,10 @@ public class GameMenuManager : MonoBehaviour
             currentResolutionIndex = PlayerPrefs.GetInt("ResolutionIndex");
             currentResolutionIndex = Mathf.Clamp(currentResolutionIndex, 0, resolutionOptions.Length - 1);
         }
-
         if (PlayerPrefs.HasKey("FullScreen"))
-        {
             isFullScreen = PlayerPrefs.GetInt("FullScreen") == 1;
-        }
 
         ApplyResolution();
-    }
-
-    public void LoadTestScene()
-    {
-        SceneManager.LoadScene("testScene");
     }
 }
 
@@ -119,7 +130,6 @@ public class ResolutionOption
 {
     public Vector2Int resolution;
     public string displayName;
-
     public ResolutionOption(Vector2Int res, string name)
     {
         resolution = res;
